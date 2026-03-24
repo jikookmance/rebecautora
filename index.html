@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rebeca Hibiscus | Autora</title>
+    <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. VARIÁVEIS E RESET (PRIMEIRA VERSÃO)
+           ========================================= */
+        :root {
+            /* Paleta Original Restaurada */
+            --bg-color: #F8F7F5;
+            /* Branco off-white 70% */
+            --hibiscus-red: #8C1C1C;
+            /* Vermelho Hibisco 10% */
+            --deep-green: #1F2A26;
+            /* Verde Profundo 20% */
+            --soft-green: #5E6F64;
+            /* Verde Suave */
+
+            /* Tipografia */
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Inter', sans-serif;
+
+            /* Bordas Orgânicas Fluidas */
+            --radius-organic: 60% 40% 70% 30% / 40% 50% 60% 50%;
+
+            /* Transições */
+            --transition-smooth: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--deep-green);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: var(--font-serif);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        p {
+            font-weight: 300;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-smooth);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* --- 2. NAVEGAÇÃO MINIMALISTA --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2000;
+            background: rgba(248, 247, 245, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(31, 42, 38, 0.03);
+        }
+
+        .nav-logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            color: var(--hibiscus-red);
+            font-weight: 400;
+        }
+
+        .nav-links a {
+            margin-left: 25px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--deep-green);
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--hibiscus-red);
+        }
+
+        /* --- 3. CAMADA DE PÉTALAS CAINDO (SUTIL) --- */
+        #petals-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3E%3Cpath fill='%23B23A3A' opacity='0.5' d='M25 0 C30 10 35 20 25 50 C15 20 20 10 25 0 Z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            will-change: transform;
+        }
+
+        /* --- 4. SEÇÕES --- */
+        section {
+            min-height: 100vh;
+            padding: 90px 10%;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(1px);
+        }
+
+        /* Componente Botão Estilizado */
+        .btn {
+            display: inline-block;
+            padding: 16px 45px;
+            border: 1px solid var(--hibiscus-red);
+            color: var(--hibiscus-red);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            background: transparent;
+        }
+
+        .btn:hover {
+            background: var(--hibiscus-red);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* HIBISCOS FIXOS DECORATIVOS */
+        .hibiscus-fixed {
+            position: fixed;
+            top: -15vh;
+            width: 220px;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 2;
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0.9;
+        }
+
+        /* DIREITA */
+        .hibiscus-right {
+            right: 0;
+            top: -10vh;
+            background-image: url('img/hibisco.png');
+            background-position: top right;
+            width: clamp(300px, 35vw, 700px);
+            margin-right: clamp(-120px, -8vw, -250px);
+            transform: scaleX(-1);
+        }
+
+        /* HERO (PRIMEIRA TELA) - CONFIGURAÇÃO EXATA */
+        #hero {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-name {
+            font-size: clamp(3.5rem, 8vw, 6rem);
+            font-weight: 300;
+        }
+
+        .hero-quote {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.5rem;
+            margin: 20px 0 40px;
+            color: var(--soft-green);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+        /* BLOCO DO LIVRO */
+        #livro {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .livro-card {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            background: white;
+            padding: 60px;
+            border-radius: var(--radius-organic);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.02);
+        }
+
+        .livro-capa {
+            width: 220px;
+            height: 320px;
+            background-image: url('img/psno.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 4px;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .livro-info h2 {
+            font-size: 2.8rem;
+            color: var(--hibiscus-red);
+            margin-bottom: 10px;
+        }
+
+        .livro-desc {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--soft-green);
+            margin-bottom: 10px;
+        }
+
+        .att {
+            font-size: 13px;
+        }
+
+
+        /* SOBRE (ESTILO EDITORIAL) - CONFIGURAÇÃO EXATA */
+        .sobre-editorial {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .foto-about {
+            height: 550px;
+            background-image: url('img/autora.jpeg');
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            border-radius: var(--radius-organic);
+            overflow: hidden;
+            box-shadow: 15px 15px 50px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Bio à direita */
+        .texto-sobre h2 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            color: var(--deep-green);
+        }
+
+        .texto-sobre p {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            margin-bottom: 25px;
+            color: var(--deep-green);
+        }
+
+
+        /* EXPERIÊNCIA IMERSIVA (GRID) */
+        .experiencia-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+        }
+
+        .exp-item {
+            height: 250px;
+            background: white;
+            border-radius: var(--radius-organic);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            color: var(--soft-green);
+        }
+
+
+        /* ANIMAÇÃO FALL */
+        @keyframes floatPetal {
+            0% {
+                transform: translateY(-10vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(110vh) translateX(-30px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* RESPONSIVIDADE (Mobile) */
+        @media (max-width: 1024px) {
+            .sobre-editorial {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-img-box {
+                display: none;
+            }
+
+            section {
+                padding: 100px 5%;
+            }
+
+            .livro-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            nav {
+                padding: 15px 5%;
+            }
+
+            .nav-links {
+                display: none;
+                /* limpa visual no mobile */
+            }
+
+            .hero-name {
+                font-size: 2.5rem;
+            }
+
+            .hero-quote {
+                font-size: 1.1rem;
+                padding: 0 10px;
+            }
+
+            .btn {
+                padding: 14px 30px;
+                font-size: 0.7rem;
+            }
+
+            .livro-card {
+                padding: 30px;
+                gap: 30px;
+            }
+
+            .livro-info h2 {
+                font-size: 2rem;
+            }
+
+            .foto-about {
+                height: 350px;
+            }
+
+            .texto-sobre h2 {
+                font-size: 2rem;
+            }
+
+            .texto-sobre p {
+                font-size: 0.95rem;
+            }
+
+            .experiencia-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hibiscus-fixed {
+                display: block;
+                opacity: 0.3;
+            }
+
+            .hibiscus-right {
+                filter: blur(1px);
+                opacity: 0.15;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hibiscus-fixed hibiscus-left"></div>
+    <div class="hibiscus-fixed hibiscus-right"></div>
+
+    <div id="petals-container"></div>
+
+    <nav>
+        <div class="nav-logo">Rebeca Hibiscus</div>
+        <div class="nav-links">
+            <a href="#hero">Início</a>
+            <a href="#sobre">Sobre a Autora</a>
+            <a href="#livro">Obras</a>
+            <a href="#experiencia">Universo</a>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-img-box"></div>
+        <div style="max-width: 800px;">
+            <h1 class="hero-name">Rebeca Hibiscus</h1>
+            <p class="hero-quote">“Onde todas as respostas estão nas entrelinhas, <br> você só precisa querer vê-las.”</p>
+            <a href="#livro" class="btn">Obras da autora</a>
+        </div>
+    </section>
+    <section id="sobre">
+        <div class="sobre-editorial">
+            <div class="foto-about"></div>
+            <div class="texto-sobre">
+                <h2>Sobre Mim</h2>
+                <p>Rebeca Hibiscus constrói narrativas intensas, com personagens imperfeitos e cheios de camadas.
+                    Iniciou na escrita ainda na adolescência, mas foi somente com 17 anos em 2022 que decidiu transformar
+                    ideias
+                    em universos reais.</p>
+                <p>"Minhas obras partem de uma proposta: instigar você leitor a descobrir o que te move e até onde está
+                    disposto a ir por aquilo que sente."</p>
+                <p style="color: var(--soft-green); letter-spacing: 1px; font-weight: 600;">Graduando Sistemas de
+                    Informação • Escrita de Gênero Fanfiction • ARMY</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="livro">
+        <div class="livro-card">
+            <div class="livro-capa"></div>
+            <div class="livro-info">
+                <h2>Procura-se Nossas Ondas</h2>
+                <p class="livro-desc">Um romance cheio de mistério e mar</p>
+                <P class="att" style=" font-weight: 300;">Atualizações de PSNO toda sexta, 19H.</P> <br>
+                <a href="https://www.wattpad.com/story/402433673-procura-se-nossas-ondas-jikook" target="_blank"
+                    class="btn">Ler no Wattpad</a>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="experiencia" style="flex-direction: column; justify-content: center;">
+        <h2 style="font-family: var(--font-serif); font-size: 2.8rem; margin-bottom: 50px; text-align: center;">Mergulhe
+            no Universo de Procura-se Nossas Ondas</h2>
+        <div class="experiencia-grid">
+            <div class="exp-item"><a
+                    href="https://open.spotify.com/playlist/4mR7V7s3HafNNSNHrMLwaz?si=17d8c47a6cdf43e5&pt=bf01ebb251481227034a9587b3ec6a89"
+                    target="_blank" rel="noopener noreferrer">🎧 Playlist</a></div>
+            <div class="exp-item"><a href="http://jikookmance.github.io/rebecahibiscus/" target="_blank"
+                    rel="noopener noreferrer">👤 Personagens</a></div>
+            <div class="exp-item"><a href="http://www.instagram.com/rebecahibiscus/" target="_blank"
+                    rel="noopener noreferrer">🌊 Curiosidades e novidades!</a></div>
+        </div>
+    </section>
+
+    <footer
+        style="padding: 60px 10%; text-align: center; border-top: 1px solid rgba(0,0,0,0.03); color: var(--soft-green);">
+        <p style="font-size: 0.8rem; letter-spacing: 3px;">© 2026 REBECA HIBISCUS</p>
+    </footer>
+
+    <script>
+        // Animação de Pétalas Sutil e Aleatória (RESTABELECIDA)
+        const container = document.getElementById('petals-container');
+        const petalCount = 18; // Quantidade sutil
+
+        for (let i = 0; i < petalCount; i++) {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+
+            // Valores aleatórios para parecer natural
+            const size = Math.random() * 20 + 10; // 10px a 30px
+            const left = Math.random() * 100;
+            const duration = Math.random() * 10 + 10; // 10s a 20s de queda
+            const delay = Math.random() * 15; // Inicia em tempos diferentes
+
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size}px`;
+            petal.style.left = `${left}vw`;
+            petal.style.animation = `floatPetal ${duration}s linear infinite`;
+            petal.style.animationDelay = `-${delay}s`; // Inicia em tempos diferentes para não cair tudo junto
+
+            container.appendChild(petal);
+        }
+    </script>
+</body>
+
+</html>
